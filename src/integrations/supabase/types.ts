@@ -518,6 +518,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_exam_question: {
+        Args: { p_exam_id: string; p_question_id: string }
+        Returns: undefined
+      }
+      admin_set_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: undefined
+      }
+      assign_candidates: {
+        Args: { p_candidate_ids: string[]; p_exam_id: string }
+        Returns: undefined
+      }
+      claim_first_admin: { Args: never; Returns: undefined }
+      delete_exam: { Args: { p_id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -525,7 +542,71 @@ export type Database = {
         }
         Returns: boolean
       }
+      import_questions: {
+        Args: {
+          p_category_ids: string[]
+          p_exam_id: string
+          p_exam_title: string
+          p_rows: Json
+        }
+        Returns: Json
+      }
       is_admin: { Args: never; Returns: boolean }
+      log_audit: {
+        Args: {
+          _action: string
+          _details?: Json
+          _entity: string
+          _entity_id: string
+        }
+        Returns: undefined
+      }
+      remove_exam_question: {
+        Args: { p_exam_id: string; p_question_id: string }
+        Returns: undefined
+      }
+      save_answer: {
+        Args: {
+          p_attempt_id: string
+          p_option_id: string
+          p_question_id: string
+        }
+        Returns: undefined
+      }
+      save_exam: {
+        Args: {
+          p_access_type: string
+          p_category_id: string
+          p_description: string
+          p_duration_minutes: number
+          p_id: string
+          p_max_attempts: number
+          p_passing_score: number
+          p_randomize_options: boolean
+          p_randomize_questions: boolean
+          p_show_correct_answers: boolean
+          p_slug: string
+          p_status: string
+          p_title: string
+        }
+        Returns: string
+      }
+      save_question: {
+        Args: {
+          p_category_id: string
+          p_difficulty: string
+          p_id: string
+          p_options: Json
+          p_score: number
+          p_status: string
+          p_text: string
+        }
+        Returns: string
+      }
+      unassign_candidate: {
+        Args: { p_candidate_id: string; p_exam_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "candidate"
