@@ -10,33 +10,317 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedAiSettingsRouteImport } from './routes/_authenticated/ai-settings'
+import { Route as AuthenticatedAuditRouteImport } from './routes/_authenticated/audit'
+import { Route as AuthenticatedCategoriesRouteImport } from './routes/_authenticated/categories'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedExamsRouteImport } from './routes/_authenticated/exams'
+import { Route as AuthenticatedImportRouteImport } from './routes/_authenticated/import'
+import { Route as AuthenticatedMyExamsRouteImport } from './routes/_authenticated/my-exams'
+import { Route as AuthenticatedMyResultsRouteImport } from './routes/_authenticated/my-results'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedQuestionReportsRouteImport } from './routes/_authenticated/question-reports'
+import { Route as AuthenticatedQuestionsRouteImport } from './routes/_authenticated/questions'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
+import { Route as AuthenticatedResultsRouteImport } from './routes/_authenticated/results'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedSubscriptionRouteImport } from './routes/_authenticated/subscription'
+import { Route as AuthenticatedSubscriptionsRouteImport } from './routes/_authenticated/subscriptions'
+import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
+import { Route as AuthenticatedAttemptAttemptIdRouteImport } from './routes/_authenticated/attempt.$attemptId'
+import { Route as AuthenticatedExamsExamIdRouteImport } from './routes/_authenticated/exams.$examId'
+import { Route as AuthenticatedReviewAttemptIdRouteImport } from './routes/_authenticated/review.$attemptId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAiSettingsRoute = AuthenticatedAiSettingsRouteImport.update({
+  id: '/ai-settings',
+  path: '/ai-settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAuditRoute = AuthenticatedAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCategoriesRoute = AuthenticatedCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedExamsRoute = AuthenticatedExamsRouteImport.update({
+  id: '/exams',
+  path: '/exams',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedImportRoute = AuthenticatedImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMyExamsRoute = AuthenticatedMyExamsRouteImport.update({
+  id: '/my-exams',
+  path: '/my-exams',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMyResultsRoute = AuthenticatedMyResultsRouteImport.update({
+  id: '/my-results',
+  path: '/my-results',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedQuestionReportsRoute =
+  AuthenticatedQuestionReportsRouteImport.update({
+    id: '/question-reports',
+    path: '/question-reports',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedQuestionsRoute = AuthenticatedQuestionsRouteImport.update({
+  id: '/questions',
+  path: '/questions',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedResultsRoute = AuthenticatedResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSubscriptionRoute =
+  AuthenticatedSubscriptionRouteImport.update({
+    id: '/subscription',
+    path: '/subscription',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSubscriptionsRoute =
+  AuthenticatedSubscriptionsRouteImport.update({
+    id: '/subscriptions',
+    path: '/subscriptions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAttemptAttemptIdRoute =
+  AuthenticatedAttemptAttemptIdRouteImport.update({
+    id: '/attempt/$attemptId',
+    path: '/attempt/$attemptId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedExamsExamIdRoute =
+  AuthenticatedExamsExamIdRouteImport.update({
+    id: '/$examId',
+    path: '/$examId',
+    getParentRoute: () => AuthenticatedExamsRoute,
+  } as any)
+const AuthenticatedReviewAttemptIdRoute =
+  AuthenticatedReviewAttemptIdRouteImport.update({
+    id: '/review/$attemptId',
+    path: '/review/$attemptId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/ai-settings': typeof AuthenticatedAiSettingsRoute
+  '/audit': typeof AuthenticatedAuditRoute
+  '/categories': typeof AuthenticatedCategoriesRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/exams': typeof AuthenticatedExamsRouteWithChildren
+  '/import': typeof AuthenticatedImportRoute
+  '/my-exams': typeof AuthenticatedMyExamsRoute
+  '/my-results': typeof AuthenticatedMyResultsRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/question-reports': typeof AuthenticatedQuestionReportsRoute
+  '/questions': typeof AuthenticatedQuestionsRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/results': typeof AuthenticatedResultsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/subscription': typeof AuthenticatedSubscriptionRoute
+  '/subscriptions': typeof AuthenticatedSubscriptionsRoute
+  '/users': typeof AuthenticatedUsersRoute
+  '/attempt/$attemptId': typeof AuthenticatedAttemptAttemptIdRoute
+  '/exams/$examId': typeof AuthenticatedExamsExamIdRoute
+  '/review/$attemptId': typeof AuthenticatedReviewAttemptIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/ai-settings': typeof AuthenticatedAiSettingsRoute
+  '/audit': typeof AuthenticatedAuditRoute
+  '/categories': typeof AuthenticatedCategoriesRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/exams': typeof AuthenticatedExamsRouteWithChildren
+  '/import': typeof AuthenticatedImportRoute
+  '/my-exams': typeof AuthenticatedMyExamsRoute
+  '/my-results': typeof AuthenticatedMyResultsRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/question-reports': typeof AuthenticatedQuestionReportsRoute
+  '/questions': typeof AuthenticatedQuestionsRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/results': typeof AuthenticatedResultsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/subscription': typeof AuthenticatedSubscriptionRoute
+  '/subscriptions': typeof AuthenticatedSubscriptionsRoute
+  '/users': typeof AuthenticatedUsersRoute
+  '/attempt/$attemptId': typeof AuthenticatedAttemptAttemptIdRoute
+  '/exams/$examId': typeof AuthenticatedExamsExamIdRoute
+  '/review/$attemptId': typeof AuthenticatedReviewAttemptIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/ai-settings': typeof AuthenticatedAiSettingsRoute
+  '/_authenticated/audit': typeof AuthenticatedAuditRoute
+  '/_authenticated/categories': typeof AuthenticatedCategoriesRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/exams': typeof AuthenticatedExamsRouteWithChildren
+  '/_authenticated/import': typeof AuthenticatedImportRoute
+  '/_authenticated/my-exams': typeof AuthenticatedMyExamsRoute
+  '/_authenticated/my-results': typeof AuthenticatedMyResultsRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/question-reports': typeof AuthenticatedQuestionReportsRoute
+  '/_authenticated/questions': typeof AuthenticatedQuestionsRoute
+  '/_authenticated/reports': typeof AuthenticatedReportsRoute
+  '/_authenticated/results': typeof AuthenticatedResultsRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/subscription': typeof AuthenticatedSubscriptionRoute
+  '/_authenticated/subscriptions': typeof AuthenticatedSubscriptionsRoute
+  '/_authenticated/users': typeof AuthenticatedUsersRoute
+  '/_authenticated/attempt/$attemptId': typeof AuthenticatedAttemptAttemptIdRoute
+  '/_authenticated/exams/$examId': typeof AuthenticatedExamsExamIdRoute
+  '/_authenticated/review/$attemptId': typeof AuthenticatedReviewAttemptIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/ai-settings'
+    | '/audit'
+    | '/categories'
+    | '/dashboard'
+    | '/exams'
+    | '/import'
+    | '/my-exams'
+    | '/my-results'
+    | '/profile'
+    | '/question-reports'
+    | '/questions'
+    | '/reports'
+    | '/results'
+    | '/settings'
+    | '/subscription'
+    | '/subscriptions'
+    | '/users'
+    | '/attempt/$attemptId'
+    | '/exams/$examId'
+    | '/review/$attemptId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/ai-settings'
+    | '/audit'
+    | '/categories'
+    | '/dashboard'
+    | '/exams'
+    | '/import'
+    | '/my-exams'
+    | '/my-results'
+    | '/profile'
+    | '/question-reports'
+    | '/questions'
+    | '/reports'
+    | '/results'
+    | '/settings'
+    | '/subscription'
+    | '/subscriptions'
+    | '/users'
+    | '/attempt/$attemptId'
+    | '/exams/$examId'
+    | '/review/$attemptId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/_authenticated/ai-settings'
+    | '/_authenticated/audit'
+    | '/_authenticated/categories'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/exams'
+    | '/_authenticated/import'
+    | '/_authenticated/my-exams'
+    | '/_authenticated/my-results'
+    | '/_authenticated/profile'
+    | '/_authenticated/question-reports'
+    | '/_authenticated/questions'
+    | '/_authenticated/reports'
+    | '/_authenticated/results'
+    | '/_authenticated/settings'
+    | '/_authenticated/subscription'
+    | '/_authenticated/subscriptions'
+    | '/_authenticated/users'
+    | '/_authenticated/attempt/$attemptId'
+    | '/_authenticated/exams/$examId'
+    | '/_authenticated/review/$attemptId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +332,234 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/ai-settings': {
+      id: '/_authenticated/ai-settings'
+      path: '/ai-settings'
+      fullPath: '/ai-settings'
+      preLoaderRoute: typeof AuthenticatedAiSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/audit': {
+      id: '/_authenticated/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuthenticatedAuditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/categories': {
+      id: '/_authenticated/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof AuthenticatedCategoriesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/exams': {
+      id: '/_authenticated/exams'
+      path: '/exams'
+      fullPath: '/exams'
+      preLoaderRoute: typeof AuthenticatedExamsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/import': {
+      id: '/_authenticated/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof AuthenticatedImportRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-exams': {
+      id: '/_authenticated/my-exams'
+      path: '/my-exams'
+      fullPath: '/my-exams'
+      preLoaderRoute: typeof AuthenticatedMyExamsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-results': {
+      id: '/_authenticated/my-results'
+      path: '/my-results'
+      fullPath: '/my-results'
+      preLoaderRoute: typeof AuthenticatedMyResultsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/question-reports': {
+      id: '/_authenticated/question-reports'
+      path: '/question-reports'
+      fullPath: '/question-reports'
+      preLoaderRoute: typeof AuthenticatedQuestionReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/questions': {
+      id: '/_authenticated/questions'
+      path: '/questions'
+      fullPath: '/questions'
+      preLoaderRoute: typeof AuthenticatedQuestionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/results': {
+      id: '/_authenticated/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof AuthenticatedResultsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subscription': {
+      id: '/_authenticated/subscription'
+      path: '/subscription'
+      fullPath: '/subscription'
+      preLoaderRoute: typeof AuthenticatedSubscriptionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subscriptions': {
+      id: '/_authenticated/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/subscriptions'
+      preLoaderRoute: typeof AuthenticatedSubscriptionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/users': {
+      id: '/_authenticated/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AuthenticatedUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/attempt/$attemptId': {
+      id: '/_authenticated/attempt/$attemptId'
+      path: '/attempt/$attemptId'
+      fullPath: '/attempt/$attemptId'
+      preLoaderRoute: typeof AuthenticatedAttemptAttemptIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/exams/$examId': {
+      id: '/_authenticated/exams/$examId'
+      path: '/$examId'
+      fullPath: '/exams/$examId'
+      preLoaderRoute: typeof AuthenticatedExamsExamIdRouteImport
+      parentRoute: typeof AuthenticatedExamsRoute
+    }
+    '/_authenticated/review/$attemptId': {
+      id: '/_authenticated/review/$attemptId'
+      path: '/review/$attemptId'
+      fullPath: '/review/$attemptId'
+      preLoaderRoute: typeof AuthenticatedReviewAttemptIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedExamsRouteChildren {
+  AuthenticatedExamsExamIdRoute: typeof AuthenticatedExamsExamIdRoute
+}
+
+const AuthenticatedExamsRouteChildren: AuthenticatedExamsRouteChildren = {
+  AuthenticatedExamsExamIdRoute: AuthenticatedExamsExamIdRoute,
+}
+
+const AuthenticatedExamsRouteWithChildren =
+  AuthenticatedExamsRoute._addFileChildren(AuthenticatedExamsRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAiSettingsRoute: typeof AuthenticatedAiSettingsRoute
+  AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute
+  AuthenticatedCategoriesRoute: typeof AuthenticatedCategoriesRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedExamsRoute: typeof AuthenticatedExamsRouteWithChildren
+  AuthenticatedImportRoute: typeof AuthenticatedImportRoute
+  AuthenticatedMyExamsRoute: typeof AuthenticatedMyExamsRoute
+  AuthenticatedMyResultsRoute: typeof AuthenticatedMyResultsRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedQuestionReportsRoute: typeof AuthenticatedQuestionReportsRoute
+  AuthenticatedQuestionsRoute: typeof AuthenticatedQuestionsRoute
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
+  AuthenticatedResultsRoute: typeof AuthenticatedResultsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedSubscriptionRoute: typeof AuthenticatedSubscriptionRoute
+  AuthenticatedSubscriptionsRoute: typeof AuthenticatedSubscriptionsRoute
+  AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
+  AuthenticatedAttemptAttemptIdRoute: typeof AuthenticatedAttemptAttemptIdRoute
+  AuthenticatedReviewAttemptIdRoute: typeof AuthenticatedReviewAttemptIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAiSettingsRoute: AuthenticatedAiSettingsRoute,
+  AuthenticatedAuditRoute: AuthenticatedAuditRoute,
+  AuthenticatedCategoriesRoute: AuthenticatedCategoriesRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedExamsRoute: AuthenticatedExamsRouteWithChildren,
+  AuthenticatedImportRoute: AuthenticatedImportRoute,
+  AuthenticatedMyExamsRoute: AuthenticatedMyExamsRoute,
+  AuthenticatedMyResultsRoute: AuthenticatedMyResultsRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedQuestionReportsRoute: AuthenticatedQuestionReportsRoute,
+  AuthenticatedQuestionsRoute: AuthenticatedQuestionsRoute,
+  AuthenticatedReportsRoute: AuthenticatedReportsRoute,
+  AuthenticatedResultsRoute: AuthenticatedResultsRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedSubscriptionRoute: AuthenticatedSubscriptionRoute,
+  AuthenticatedSubscriptionsRoute: AuthenticatedSubscriptionsRoute,
+  AuthenticatedUsersRoute: AuthenticatedUsersRoute,
+  AuthenticatedAttemptAttemptIdRoute: AuthenticatedAttemptAttemptIdRoute,
+  AuthenticatedReviewAttemptIdRoute: AuthenticatedReviewAttemptIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
