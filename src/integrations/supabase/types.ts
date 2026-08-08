@@ -14,6 +14,65 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_explanations: {
+        Row: {
+          created_at: string
+          explanation: string
+          model: string | null
+          question_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          explanation: string
+          model?: string | null
+          question_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          explanation?: string
+          model?: string | null
+          question_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_explanations_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: true
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_settings: {
+        Row: {
+          api_key: string | null
+          cache_enabled: boolean
+          id: boolean
+          model: string
+          provider: string
+          updated_at: string
+        }
+        Insert: {
+          api_key?: string | null
+          cache_enabled?: boolean
+          id?: boolean
+          model?: string
+          provider?: string
+          updated_at?: string
+        }
+        Update: {
+          api_key?: string | null
+          cache_enabled?: boolean
+          id?: boolean
+          model?: string
+          provider?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           key: string
@@ -186,6 +245,7 @@ export type Database = {
       exam_attempts: {
         Row: {
           candidate_id: string
+          category_ids: string[] | null
           correct_count: number
           earned_score: number
           exam_id: string
@@ -201,6 +261,7 @@ export type Database = {
         }
         Insert: {
           candidate_id: string
+          category_ids?: string[] | null
           correct_count?: number
           earned_score?: number
           exam_id: string
@@ -216,6 +277,7 @@ export type Database = {
         }
         Update: {
           candidate_id?: string
+          category_ids?: string[] | null
           correct_count?: number
           earned_score?: number
           exam_id?: string
@@ -448,6 +510,63 @@ export type Database = {
           },
         ]
       }
+      question_reports: {
+        Row: {
+          admin_note: string | null
+          attempt_id: string | null
+          created_at: string
+          description: string | null
+          exam_id: string | null
+          id: string
+          question_id: string
+          reason: string
+          reporter_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_note?: string | null
+          attempt_id?: string | null
+          created_at?: string
+          description?: string | null
+          exam_id?: string | null
+          id?: string
+          question_id: string
+          reason: string
+          reporter_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_note?: string | null
+          attempt_id?: string | null
+          created_at?: string
+          description?: string | null
+          exam_id?: string | null
+          id?: string
+          question_id?: string
+          reason?: string
+          reporter_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "question_reports_exam_id_fkey"
+            columns: ["exam_id"]
+            isOneToOne: false
+            referencedRelation: "exams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "question_reports_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       questions: {
         Row: {
           category_id: string | null
@@ -492,6 +611,69 @@ export type Database = {
           },
         ]
       }
+      sms_delivery_logs: {
+        Row: {
+          created_at: string
+          id: string
+          mobile_masked: string
+          provider_status: number | null
+          purpose: string
+          success: boolean
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mobile_masked: string
+          provider_status?: number | null
+          purpose?: string
+          success?: boolean
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mobile_masked?: string
+          provider_status?: number | null
+          purpose?: string
+          success?: boolean
+        }
+        Relationships: []
+      }
+      sms_otp_codes: {
+        Row: {
+          attempts: number
+          code_hash: string
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          mobile: string
+          request_ip: string | null
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          code_hash: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          mobile: string
+          request_ip?: string | null
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          code_hash?: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          mobile?: string
+          request_ip?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -534,7 +716,18 @@ export type Database = {
         Returns: undefined
       }
       claim_first_admin: { Args: never; Returns: undefined }
+      delete_category: { Args: { p_id: string }; Returns: undefined }
       delete_exam: { Args: { p_id: string }; Returns: undefined }
+      get_attempt_review: { Args: { p_attempt_id: string }; Returns: Json }
+      get_attempt_state: { Args: { p_attempt_id: string }; Returns: Json }
+      get_exam_topics: {
+        Args: { p_exam_id: string }
+        Returns: {
+          category_id: string
+          category_name: string
+          question_count: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -552,6 +745,22 @@ export type Database = {
         Returns: Json
       }
       is_admin: { Args: never; Returns: boolean }
+      list_question_reports: {
+        Args: never
+        Returns: {
+          admin_note: string
+          created_at: string
+          description: string
+          exam_title: string
+          id: string
+          question_id: string
+          question_text: string
+          reason: string
+          reporter_email: string
+          reporter_name: string
+          status: string
+        }[]
+      }
       log_audit: {
         Args: {
           _action: string
@@ -564,6 +773,16 @@ export type Database = {
       remove_exam_question: {
         Args: { p_exam_id: string; p_question_id: string }
         Returns: undefined
+      }
+      report_question: {
+        Args: {
+          p_attempt_id?: string
+          p_description?: string
+          p_exam_id?: string
+          p_question_id: string
+          p_reason: string
+        }
+        Returns: string
       }
       save_answer: {
         Args: {
@@ -603,6 +822,15 @@ export type Database = {
         }
         Returns: string
       }
+      set_exam_categories: {
+        Args: { p_category_ids: string[]; p_exam_id: string }
+        Returns: undefined
+      }
+      start_attempt: {
+        Args: { p_category_ids?: string[]; p_exam_id: string }
+        Returns: string
+      }
+      submit_attempt: { Args: { p_attempt_id: string }; Returns: Json }
       unassign_candidate: {
         Args: { p_candidate_id: string; p_exam_id: string }
         Returns: undefined
