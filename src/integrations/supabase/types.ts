@@ -14,6 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_subscription_grants: {
+        Row: {
+          admin_id: string | null
+          created_at: string
+          days: number
+          expires_at: string
+          id: string
+          reason: string | null
+          user_id: string
+        }
+        Insert: {
+          admin_id?: string | null
+          created_at?: string
+          days: number
+          expires_at: string
+          id?: string
+          reason?: string | null
+          user_id: string
+        }
+        Update: {
+          admin_id?: string | null
+          created_at?: string
+          days?: number
+          expires_at?: string
+          id?: string
+          reason?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_subscription_grants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_explanations: {
         Row: {
           created_at: string
@@ -445,15 +483,118 @@ export type Database = {
           },
         ]
       }
+      payments: {
+        Row: {
+          amount: number
+          authority: string | null
+          created_at: string
+          gateway: string
+          id: string
+          paid_at: string | null
+          plan_id: string | null
+          status: string
+          subscription_id: string | null
+          transaction_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          authority?: string | null
+          created_at?: string
+          gateway?: string
+          id?: string
+          paid_at?: string | null
+          plan_id?: string | null
+          status?: string
+          subscription_id?: string | null
+          transaction_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          authority?: string | null
+          created_at?: string
+          gateway?: string
+          id?: string
+          paid_at?: string | null
+          plan_id?: string | null
+          status?: string
+          subscription_id?: string | null
+          transaction_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plans: {
+        Row: {
+          created_at: string
+          display_order: number
+          duration_months: number
+          id: string
+          is_active: boolean
+          price: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          duration_months: number
+          id?: string
+          is_active?: boolean
+          price?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          duration_months?: number
+          id?: string
+          is_active?: boolean
+          price?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string
           email: string | null
           full_name: string
+          has_used_trial: boolean
           id: string
           mobile: string | null
           status: string
+          trial_ends_at: string | null
+          trial_started_at: string | null
           updated_at: string
         }
         Insert: {
@@ -461,9 +602,12 @@ export type Database = {
           created_at?: string
           email?: string | null
           full_name?: string
+          has_used_trial?: boolean
           id: string
           mobile?: string | null
           status?: string
+          trial_ends_at?: string | null
+          trial_started_at?: string | null
           updated_at?: string
         }
         Update: {
@@ -471,9 +615,12 @@ export type Database = {
           created_at?: string
           email?: string | null
           full_name?: string
+          has_used_trial?: boolean
           id?: string
           mobile?: string | null
           status?: string
+          trial_ends_at?: string | null
+          trial_started_at?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -674,6 +821,108 @@ export type Database = {
         }
         Relationships: []
       }
+      sms_settings: {
+        Row: {
+          api_key: string | null
+          enabled: boolean
+          id: boolean
+          provider: string
+          updated_at: string
+          updated_by: string | null
+          verify_template_id: string | null
+          welcome_template_id: string | null
+        }
+        Insert: {
+          api_key?: string | null
+          enabled?: boolean
+          id?: boolean
+          provider?: string
+          updated_at?: string
+          updated_by?: string | null
+          verify_template_id?: string | null
+          welcome_template_id?: string | null
+        }
+        Update: {
+          api_key?: string | null
+          enabled?: boolean
+          id?: boolean
+          provider?: string
+          updated_at?: string
+          updated_by?: string | null
+          verify_template_id?: string | null
+          welcome_template_id?: string | null
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          expires_at: string
+          id: string
+          plan_id: string | null
+          started_at: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          expires_at: string
+          id?: string
+          plan_id?: string | null
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string
+          id?: string
+          plan_id?: string | null
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trial_claims: {
+        Row: {
+          claimed_at: string
+          email: string
+          first_user_id: string | null
+        }
+        Insert: {
+          claimed_at?: string
+          email: string
+          first_user_id?: string | null
+        }
+        Update: {
+          claimed_at?: string
+          email?: string
+          first_user_id?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -704,6 +953,31 @@ export type Database = {
         Args: { p_exam_id: string; p_question_id: string }
         Returns: undefined
       }
+      admin_grant_subscription: {
+        Args: {
+          p_days: number
+          p_plan_id?: string
+          p_reason?: string
+          p_user_id: string
+        }
+        Returns: Json
+      }
+      admin_list_subscriptions: {
+        Args: { p_search?: string; p_status?: string }
+        Returns: {
+          email: string
+          expires_at: string
+          full_name: string
+          has_used_trial: boolean
+          mobile: string
+          plan_title: string
+          remaining_days: number
+          started_at: string
+          status: string
+          subscription_id: string
+          user_id: string
+        }[]
+      }
       admin_set_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -711,11 +985,20 @@ export type Database = {
         }
         Returns: undefined
       }
+      admin_set_subscription_status: {
+        Args: { p_reason?: string; p_status: string; p_user_id: string }
+        Returns: undefined
+      }
+      admin_subscription_stats: { Args: never; Returns: Json }
       assign_candidates: {
         Args: { p_candidate_ids: string[]; p_exam_id: string }
         Returns: undefined
       }
       claim_first_admin: { Args: never; Returns: undefined }
+      create_payment_intent: {
+        Args: { p_gateway?: string; p_plan_id: string }
+        Returns: Json
+      }
       delete_category: { Args: { p_id: string }; Returns: undefined }
       delete_exam: { Args: { p_id: string }; Returns: undefined }
       get_attempt_review: { Args: { p_attempt_id: string }; Returns: Json }
@@ -728,6 +1011,7 @@ export type Database = {
           question_count: number
         }[]
       }
+      has_active_subscription: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -770,6 +1054,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      my_subscription: { Args: never; Returns: Json }
       remove_exam_question: {
         Args: { p_exam_id: string; p_question_id: string }
         Returns: undefined
