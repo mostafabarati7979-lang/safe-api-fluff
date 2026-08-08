@@ -1,14 +1,16 @@
-# Welcome to your Lovable project
+# AI Key Settings
+
+https://github.com/mostafabarati7979-lang/18.5.14052.git کد رو دیباگ کن قسمت کلید apiهوش مصنوعی رو به تنظیمات اضافه کن دسته بندی خودکار سوالات رو حذف و برای پنل پیامکی تا قرار گرفتن api 1234 قرار بده
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/22ba04db-37c7-4da7-8b2f-23d3314df2d3).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +22,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
