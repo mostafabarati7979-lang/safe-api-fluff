@@ -40,6 +40,8 @@ const adminItems = [
   { title: "داشبورد", url: "/dashboard", icon: LayoutDashboard },
   { title: "کاربران", url: "/users", icon: Users },
   { title: "دسته‌بندی‌ها", url: "/categories", icon: FolderTree },
+  { title: "سازمان‌ها", url: "/organizations", icon: Users },
+  { title: "درس‌ها", url: "/subjects", icon: GraduationCap },
   { title: "آزمون‌ها", url: "/exams", icon: ClipboardList },
   { title: "بانک سوالات", url: "/questions", icon: Database },
   { title: "بارگذاری اکسل", url: "/import", icon: FileSpreadsheet },

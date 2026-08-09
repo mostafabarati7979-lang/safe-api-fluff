@@ -2,31 +2,12 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Settings, Clock, GraduationCap, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Settings, Clock, GraduationCap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,11 +23,10 @@ import {
   InlineLoading,
   EmptyState,
   ErrorState,
-  RequireAdmin,
 } from "@/components/ui-states";
-import { Checkbox } from "@/components/ui/checkbox";
 import { StartExamDialog } from "@/components/start-exam-dialog";
-import { examStatusLabels, slugify } from "@/lib/format";
+import { ExamWizard } from "@/components/exam-wizard";
+import { examStatusLabels } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/exams")({
   head: () => ({
@@ -113,7 +93,7 @@ function ExamsPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState<FormState>(emptyForm);
+  const [wizardExamId, setWizardExamId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [startExam, setStartExam] = useState<ExamRow | null>(null);
 
@@ -143,52 +123,6 @@ function ExamsPage() {
     },
   });
 
-  const save = useMutation({
-    mutationFn: async () => {
-      const title = form.title.trim();
-      if (!title) throw new Error("عنوان آزمون الزامی است");
-      const duration = Number(form.duration_minutes);
-      if (!Number.isFinite(duration) || duration <= 0) throw new Error("مدت زمان نامعتبر است");
-      const passing = Number(form.passing_score);
-      if (!Number.isFinite(passing) || passing < 0) throw new Error("حد نصاب نامعتبر است");
-      const maxAtt = Number(form.max_attempts);
-      if (!Number.isFinite(maxAtt) || maxAtt <= 0) throw new Error("حداکثر تعداد شرکت نامعتبر است");
-
-      const { data, error } = await supabase.rpc("save_exam", {
-        p_id: (form.id || null) as unknown as string,
-        p_title: title,
-        p_slug: slugify(title),
-        p_description: (form.description.trim() || null) as unknown as string,
-        p_duration_minutes: duration,
-        p_passing_score: passing,
-        p_status: form.status,
-        p_access_type: form.access_type,
-        p_max_attempts: maxAtt,
-        p_show_correct_answers: form.show_correct_answers,
-        p_randomize_questions: form.randomize_questions,
-        p_randomize_options: form.randomize_options,
-        p_category_id: (form.category_id || null) as unknown as string,
-      });
-      if (error) throw error;
-      const examId = (data as string | null) ?? form.id;
-      if (examId) {
-        const cats = [...new Set([...form.category_ids, ...(form.category_id ? [form.category_id] : [])])];
-        const { error: catError } = await supabase.rpc("set_exam_categories", {
-          p_exam_id: examId,
-          p_category_ids: cats,
-        });
-        if (catError) throw catError;
-      }
-    },
-    onSuccess: () => {
-      toast.success("آزمون ذخیره شد");
-      setOpen(false);
-      setForm(emptyForm);
-      void qc.invalidateQueries({ queryKey: ["exams"] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
-
   const deleteExam = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.rpc("delete_exam", { p_id: id });
@@ -203,26 +137,12 @@ function ExamsPage() {
   });
 
   const openNew = () => {
-    setForm(emptyForm);
+    setWizardExamId(null);
     setOpen(true);
   };
 
   const openEdit = (e: ExamRow) => {
-    setForm({
-      id: e.id,
-      title: e.title,
-      description: e.description ?? "",
-      duration_minutes: String(e.duration_minutes),
-      passing_score: String(e.passing_score),
-      status: e.status as ExamStatus,
-      access_type: e.access_type as AccessType,
-      max_attempts: "1",
-      show_correct_answers: true,
-      randomize_questions: false,
-      randomize_options: false,
-      category_id: e.category_id ?? "",
-      category_ids: (e.exam_categories ?? []).map((ec) => ec.category_id),
-    });
+    setWizardExamId(e.id);
     setOpen(true);
   };
 
@@ -330,173 +250,14 @@ function ExamsPage() {
         <EmptyState description="آزمونی ثبت نشده است." />
       )}
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>{form.id ? "ویرایش آزمون" : "آزمون جدید"}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="exam-title">عنوان آزمون</Label>
-              <Input
-                id="exam-title"
-                maxLength={200}
-                value={form.title}
-                onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="exam-desc">توضیحات</Label>
-              <Textarea
-                id="exam-desc"
-                rows={3}
-                maxLength={2000}
-                value={form.description}
-                onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>مباحث (دسته‌بندی‌های) آزمون</Label>
-              <p className="text-xs text-muted-foreground">
-                داوطلب می‌تواند فقط در مباحث انتخاب‌شده شرکت کند.
-              </p>
-              <div className="grid max-h-48 gap-2 overflow-y-auto rounded-lg border p-3 sm:grid-cols-2">
-                {(categories.data ?? []).length === 0 ? (
-                  <span className="text-xs text-muted-foreground">دسته‌بندی‌ای ثبت نشده است.</span>
-                ) : (
-                  (categories.data ?? []).map((c) => (
-                    <label key={c.id} className="flex cursor-pointer items-center gap-2 text-sm">
-                      <Checkbox
-                        checked={form.category_ids.includes(c.id)}
-                        onCheckedChange={() =>
-                          setForm((f) => ({
-                            ...f,
-                            category_ids: f.category_ids.includes(c.id)
-                              ? f.category_ids.filter((x) => x !== c.id)
-                              : [...f.category_ids, c.id],
-                          }))
-                        }
-                      />
-                      {c.name}
-                    </label>
-                  ))
-                )}
-              </div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label>دسته‌بندی اصلی</Label>
-                <Select
-                  value={form.category_id}
-                  onValueChange={(v) => setForm((f) => ({ ...f, category_id: v }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="انتخاب کنید" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(categories.data ?? []).map((c) => (
-                      <SelectItem key={c.id} value={c.id}>
-                        {c.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="exam-duration">مدت زمان (دقیقه)</Label>
-                <Input
-                  id="exam-duration"
-                  type="number"
-                  min={1}
-                  value={form.duration_minutes}
-                  onChange={(e) => setForm((f) => ({ ...f, duration_minutes: e.target.value }))}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="exam-passing">حد نصاب قبولی (درصد)</Label>
-                <Input
-                  id="exam-passing"
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={form.passing_score}
-                  onChange={(e) => setForm((f) => ({ ...f, passing_score: e.target.value }))}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="exam-max-attempts">حداکثر تعداد شرکت</Label>
-                <Input
-                  id="exam-max-attempts"
-                  type="number"
-                  min={1}
-                  value={form.max_attempts}
-                  onChange={(e) => setForm((f) => ({ ...f, max_attempts: e.target.value }))}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>وضعیت</Label>
-                <Select
-                  value={form.status}
-                  onValueChange={(v) => setForm((f) => ({ ...f, status: v as ExamStatus }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="draft">پیش‌نویس</SelectItem>
-                    <SelectItem value="published">منتشر شده</SelectItem>
-                    <SelectItem value="finished">پایان‌یافته</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>نوع دسترسی</Label>
-                <Select
-                  value={form.access_type}
-                  onValueChange={(v) => setForm((f) => ({ ...f, access_type: v as AccessType }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="public">عمومی</SelectItem>
-                    <SelectItem value="private">خصوصی (دعوت‌محور)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              <label className="flex items-center gap-2 text-sm">
-                <Switch
-                  checked={form.show_correct_answers}
-                  onCheckedChange={(v) => setForm((f) => ({ ...f, show_correct_answers: v }))}
-                />
-                نمایش پاسخ صحیح پس از آزمون
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <Switch
-                  checked={form.randomize_questions}
-                  onCheckedChange={(v) => setForm((f) => ({ ...f, randomize_questions: v }))}
-                />
-                تصادفی‌سازی ترتیب سوالات
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <Switch
-                  checked={form.randomize_options}
-                  onCheckedChange={(v) => setForm((f) => ({ ...f, randomize_options: v }))}
-                />
-                تصادفی‌سازی ترتیب گزینه‌ها
-              </label>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>انصراف</Button>
-            <Button onClick={() => save.mutate()} disabled={save.isPending}>
-              {save.isPending ? <Loader2 className="size-4 animate-spin" /> : "ذخیره آزمون"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ExamWizard
+        open={open}
+        examId={wizardExamId}
+        onOpenChange={(o) => {
+          setOpen(o);
+          if (!o) setWizardExamId(null);
+        }}
+      />
 
       <AlertDialog open={Boolean(deleteId)} onOpenChange={(v) => !v && setDeleteId(null)}>
         <AlertDialogContent>

@@ -21,12 +21,14 @@ import { Route as AuthenticatedExamsRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedImportRouteImport } from './routes/_authenticated/import'
 import { Route as AuthenticatedMyExamsRouteImport } from './routes/_authenticated/my-exams'
 import { Route as AuthenticatedMyResultsRouteImport } from './routes/_authenticated/my-results'
+import { Route as AuthenticatedOrganizationsRouteImport } from './routes/_authenticated/organizations'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedQuestionReportsRouteImport } from './routes/_authenticated/question-reports'
 import { Route as AuthenticatedQuestionsRouteImport } from './routes/_authenticated/questions'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedResultsRouteImport } from './routes/_authenticated/results'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedSubjectsRouteImport } from './routes/_authenticated/subjects'
 import { Route as AuthenticatedSubscriptionRouteImport } from './routes/_authenticated/subscription'
 import { Route as AuthenticatedSubscriptionsRouteImport } from './routes/_authenticated/subscriptions'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
@@ -93,6 +95,12 @@ const AuthenticatedMyResultsRoute = AuthenticatedMyResultsRouteImport.update({
   path: '/my-results',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOrganizationsRoute =
+  AuthenticatedOrganizationsRouteImport.update({
+    id: '/organizations',
+    path: '/organizations',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -122,6 +130,11 @@ const AuthenticatedResultsRoute = AuthenticatedResultsRouteImport.update({
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSubjectsRoute = AuthenticatedSubjectsRouteImport.update({
+  id: '/subjects',
+  path: '/subjects',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSubscriptionRoute =
@@ -172,12 +185,14 @@ export interface FileRoutesByFullPath {
   '/import': typeof AuthenticatedImportRoute
   '/my-exams': typeof AuthenticatedMyExamsRoute
   '/my-results': typeof AuthenticatedMyResultsRoute
+  '/organizations': typeof AuthenticatedOrganizationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/question-reports': typeof AuthenticatedQuestionReportsRoute
   '/questions': typeof AuthenticatedQuestionsRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/results': typeof AuthenticatedResultsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/subjects': typeof AuthenticatedSubjectsRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
   '/subscriptions': typeof AuthenticatedSubscriptionsRoute
   '/users': typeof AuthenticatedUsersRoute
@@ -197,12 +212,14 @@ export interface FileRoutesByTo {
   '/import': typeof AuthenticatedImportRoute
   '/my-exams': typeof AuthenticatedMyExamsRoute
   '/my-results': typeof AuthenticatedMyResultsRoute
+  '/organizations': typeof AuthenticatedOrganizationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/question-reports': typeof AuthenticatedQuestionReportsRoute
   '/questions': typeof AuthenticatedQuestionsRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/results': typeof AuthenticatedResultsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/subjects': typeof AuthenticatedSubjectsRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
   '/subscriptions': typeof AuthenticatedSubscriptionsRoute
   '/users': typeof AuthenticatedUsersRoute
@@ -224,12 +241,14 @@ export interface FileRoutesById {
   '/_authenticated/import': typeof AuthenticatedImportRoute
   '/_authenticated/my-exams': typeof AuthenticatedMyExamsRoute
   '/_authenticated/my-results': typeof AuthenticatedMyResultsRoute
+  '/_authenticated/organizations': typeof AuthenticatedOrganizationsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/question-reports': typeof AuthenticatedQuestionReportsRoute
   '/_authenticated/questions': typeof AuthenticatedQuestionsRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/results': typeof AuthenticatedResultsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/subjects': typeof AuthenticatedSubjectsRoute
   '/_authenticated/subscription': typeof AuthenticatedSubscriptionRoute
   '/_authenticated/subscriptions': typeof AuthenticatedSubscriptionsRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
@@ -251,12 +270,14 @@ export interface FileRouteTypes {
     | '/import'
     | '/my-exams'
     | '/my-results'
+    | '/organizations'
     | '/profile'
     | '/question-reports'
     | '/questions'
     | '/reports'
     | '/results'
     | '/settings'
+    | '/subjects'
     | '/subscription'
     | '/subscriptions'
     | '/users'
@@ -276,12 +297,14 @@ export interface FileRouteTypes {
     | '/import'
     | '/my-exams'
     | '/my-results'
+    | '/organizations'
     | '/profile'
     | '/question-reports'
     | '/questions'
     | '/reports'
     | '/results'
     | '/settings'
+    | '/subjects'
     | '/subscription'
     | '/subscriptions'
     | '/users'
@@ -302,12 +325,14 @@ export interface FileRouteTypes {
     | '/_authenticated/import'
     | '/_authenticated/my-exams'
     | '/_authenticated/my-results'
+    | '/_authenticated/organizations'
     | '/_authenticated/profile'
     | '/_authenticated/question-reports'
     | '/_authenticated/questions'
     | '/_authenticated/reports'
     | '/_authenticated/results'
     | '/_authenticated/settings'
+    | '/_authenticated/subjects'
     | '/_authenticated/subscription'
     | '/_authenticated/subscriptions'
     | '/_authenticated/users'
@@ -409,6 +434,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMyResultsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/organizations': {
+      id: '/_authenticated/organizations'
+      path: '/organizations'
+      fullPath: '/organizations'
+      preLoaderRoute: typeof AuthenticatedOrganizationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -449,6 +481,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subjects': {
+      id: '/_authenticated/subjects'
+      path: '/subjects'
+      fullPath: '/subjects'
+      preLoaderRoute: typeof AuthenticatedSubjectsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/subscription': {
@@ -516,12 +555,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedImportRoute: typeof AuthenticatedImportRoute
   AuthenticatedMyExamsRoute: typeof AuthenticatedMyExamsRoute
   AuthenticatedMyResultsRoute: typeof AuthenticatedMyResultsRoute
+  AuthenticatedOrganizationsRoute: typeof AuthenticatedOrganizationsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedQuestionReportsRoute: typeof AuthenticatedQuestionReportsRoute
   AuthenticatedQuestionsRoute: typeof AuthenticatedQuestionsRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedResultsRoute: typeof AuthenticatedResultsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedSubjectsRoute: typeof AuthenticatedSubjectsRoute
   AuthenticatedSubscriptionRoute: typeof AuthenticatedSubscriptionRoute
   AuthenticatedSubscriptionsRoute: typeof AuthenticatedSubscriptionsRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
@@ -538,12 +579,14 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedImportRoute: AuthenticatedImportRoute,
   AuthenticatedMyExamsRoute: AuthenticatedMyExamsRoute,
   AuthenticatedMyResultsRoute: AuthenticatedMyResultsRoute,
+  AuthenticatedOrganizationsRoute: AuthenticatedOrganizationsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedQuestionReportsRoute: AuthenticatedQuestionReportsRoute,
   AuthenticatedQuestionsRoute: AuthenticatedQuestionsRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedResultsRoute: AuthenticatedResultsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedSubjectsRoute: AuthenticatedSubjectsRoute,
   AuthenticatedSubscriptionRoute: AuthenticatedSubscriptionRoute,
   AuthenticatedSubscriptionsRoute: AuthenticatedSubscriptionsRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
@@ -563,13 +606,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -65,10 +65,17 @@ type Category = {
   slug: string;
   description: string | null;
   status: "active" | "inactive";
+  parent_id: string | null;
   created_at: string;
 };
 
-const emptyForm = { id: "", name: "", description: "", status: "active" as "active" | "inactive" };
+const emptyForm = {
+  id: "",
+  name: "",
+  description: "",
+  status: "active" as "active" | "inactive",
+  parent_id: "",
+};
 
 function CategoriesPage() {
   const qc = useQueryClient();
@@ -81,7 +88,7 @@ function CategoriesPage() {
     queryFn: async (): Promise<Category[]> => {
       const { data, error } = await supabase
         .from("categories")
-        .select("id, name, slug, description, status, created_at")
+        .select("id, name, slug, description, status, parent_id, created_at")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return (data ?? []) as Category[];
@@ -98,6 +105,7 @@ function CategoriesPage() {
         slug: slugify(name),
         description: form.description.trim() || null,
         status: form.status,
+        parent_id: form.parent_id || null,
       };
       if (form.id) {
         const { error } = await supabase.from("categories").update(payload).eq("id", form.id);
@@ -135,7 +143,13 @@ function CategoriesPage() {
   };
 
   const openEdit = (c: Category) => {
-    setForm({ id: c.id, name: c.name, description: c.description ?? "", status: c.status });
+    setForm({
+      id: c.id,
+      name: c.name,
+      description: c.description ?? "",
+      status: c.status,
+      parent_id: c.parent_id ?? "",
+    });
     setOpen(true);
   };
 
@@ -165,6 +179,7 @@ function CategoriesPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>نام</TableHead>
+                    <TableHead>دسته والد</TableHead>
                     <TableHead>شناسه</TableHead>
                     <TableHead>توضیحات</TableHead>
                     <TableHead>وضعیت</TableHead>
@@ -176,6 +191,9 @@ function CategoriesPage() {
                   {data.map((c) => (
                     <TableRow key={c.id}>
                       <TableCell className="font-medium">{c.name}</TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {data.find((x) => x.id === c.parent_id)?.name ?? "—"}
+                      </TableCell>
                       <TableCell className="text-muted-foreground">{c.slug}</TableCell>
                       <TableCell className="max-w-xs truncate text-muted-foreground">
                         {c.description ?? "—"}
@@ -236,6 +254,27 @@ function CategoriesPage() {
                 value={form.description}
                 onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
               />
+            </div>
+            <div className="space-y-2">
+              <Label>دسته والد</Label>
+              <Select
+                value={form.parent_id || "none"}
+                onValueChange={(v) => setForm((f) => ({ ...f, parent_id: v === "none" ? "" : v }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="بدون والد (سطح اول)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">بدون والد (سطح اول)</SelectItem>
+                  {(data ?? [])
+                    .filter((c) => c.id !== form.id)
+                    .map((c) => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label>وضعیت</Label>
