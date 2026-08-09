@@ -93,7 +93,7 @@ function ExamsPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState<FormState>(emptyForm);
+  const [wizardExamId, setWizardExamId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [startExam, setStartExam] = useState<ExamRow | null>(null);
 
