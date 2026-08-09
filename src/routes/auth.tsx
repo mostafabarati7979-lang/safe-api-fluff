@@ -455,18 +455,6 @@ function MobileOtpSignup() {
             onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
           />
         </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="signup-email">
-            ایمیل (اختیاری)
-          </label>
-          <Input
-            id="signup-email"
-            dir="ltr"
-            placeholder="name@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
         <Button className="w-full" onClick={send} disabled={busy}>
           {busy ? <Loader2 className="size-4 animate-spin" /> : "ارسال کد تأیید"}
         </Button>
