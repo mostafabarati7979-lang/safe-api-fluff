@@ -346,7 +346,6 @@ function MobileOtpSignup() {
 
   const [fullName, setFullName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [step, setStep] = useState<"info" | "code">("info");
   const [busy, setBusy] = useState(false);
