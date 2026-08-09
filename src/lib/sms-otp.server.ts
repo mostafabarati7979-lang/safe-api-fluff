@@ -218,7 +218,6 @@ export async function registerWithOtp(params: {
   mobile: string;
   code: string;
   fullName: string;
-  email?: string | undefined;
 }): Promise<
   { ok: true; email: string; tokenHash: string } | { ok: false; reason: OtpFailure | "already_registered" }
 > {
