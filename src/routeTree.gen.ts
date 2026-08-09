@@ -28,6 +28,7 @@ import { Route as AuthenticatedQuestionsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedResultsRouteImport } from './routes/_authenticated/results'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedSubjectsRouteImport } from './routes/_authenticated/subjects'
 import { Route as AuthenticatedSubscriptionRouteImport } from './routes/_authenticated/subscription'
 import { Route as AuthenticatedSubscriptionsRouteImport } from './routes/_authenticated/subscriptions'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
@@ -131,6 +132,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSubjectsRoute = AuthenticatedSubjectsRouteImport.update({
+  id: '/subjects',
+  path: '/subjects',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSubscriptionRoute =
   AuthenticatedSubscriptionRouteImport.update({
     id: '/subscription',
@@ -186,6 +192,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof AuthenticatedReportsRoute
   '/results': typeof AuthenticatedResultsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/subjects': typeof AuthenticatedSubjectsRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
   '/subscriptions': typeof AuthenticatedSubscriptionsRoute
   '/users': typeof AuthenticatedUsersRoute
@@ -212,6 +219,7 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsRoute
   '/results': typeof AuthenticatedResultsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/subjects': typeof AuthenticatedSubjectsRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
   '/subscriptions': typeof AuthenticatedSubscriptionsRoute
   '/users': typeof AuthenticatedUsersRoute
@@ -240,6 +248,7 @@ export interface FileRoutesById {
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/results': typeof AuthenticatedResultsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/subjects': typeof AuthenticatedSubjectsRoute
   '/_authenticated/subscription': typeof AuthenticatedSubscriptionRoute
   '/_authenticated/subscriptions': typeof AuthenticatedSubscriptionsRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
@@ -268,6 +277,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/results'
     | '/settings'
+    | '/subjects'
     | '/subscription'
     | '/subscriptions'
     | '/users'
@@ -294,6 +304,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/results'
     | '/settings'
+    | '/subjects'
     | '/subscription'
     | '/subscriptions'
     | '/users'
@@ -321,6 +332,7 @@ export interface FileRouteTypes {
     | '/_authenticated/reports'
     | '/_authenticated/results'
     | '/_authenticated/settings'
+    | '/_authenticated/subjects'
     | '/_authenticated/subscription'
     | '/_authenticated/subscriptions'
     | '/_authenticated/users'
@@ -471,6 +483,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/subjects': {
+      id: '/_authenticated/subjects'
+      path: '/subjects'
+      fullPath: '/subjects'
+      preLoaderRoute: typeof AuthenticatedSubjectsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/subscription': {
       id: '/_authenticated/subscription'
       path: '/subscription'
@@ -543,6 +562,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedResultsRoute: typeof AuthenticatedResultsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedSubjectsRoute: typeof AuthenticatedSubjectsRoute
   AuthenticatedSubscriptionRoute: typeof AuthenticatedSubscriptionRoute
   AuthenticatedSubscriptionsRoute: typeof AuthenticatedSubscriptionsRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
@@ -566,6 +586,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedResultsRoute: AuthenticatedResultsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedSubjectsRoute: AuthenticatedSubjectsRoute,
   AuthenticatedSubscriptionRoute: AuthenticatedSubscriptionRoute,
   AuthenticatedSubscriptionsRoute: AuthenticatedSubscriptionsRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
