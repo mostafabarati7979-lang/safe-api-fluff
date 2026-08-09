@@ -229,7 +229,12 @@ export async function registerWithOtp(params: {
   const verified = await consumeOtp(mobile, code);
   if (!verified.ok) return { ok: false, reason: verified.reason };
 
-  const loginEmail = params.email?.trim() ? params.email.trim().toLowerCase() : mobileEmail(mobile);
+  // SECURITY: only the mobile number was proven in this flow. A user-supplied
+  // e-mail is unverified, so it must never become the confirmed account identity
+  // (that would allow squatting on someone else's address). The account is always
+  // created against the synthetic mobile address; users can add and verify a real
+  // e-mail later through the normal e-mail-change flow.
+  const loginEmail = mobileEmail(mobile);
 
   const { data: created, error: createError } = await supabaseAdmin.auth.admin.createUser({
     email: loginEmail,
