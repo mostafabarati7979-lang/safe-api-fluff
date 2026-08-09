@@ -48,10 +48,13 @@ function ProfilePage() {
       return;
     }
     setSaving(true);
+    // Mobile is verified via SMS OTP and enforced unique in the database;
+    // it is intentionally not part of this update.
     const { error } = await supabase
       .from("profiles")
-      .update({ full_name: name, mobile: mobile.trim() || null })
+      .update({ full_name: name })
       .eq("id", profile.id);
+
     setSaving(false);
     if (error) {
       toast.error("ذخیره تغییرات ناموفق بود");
@@ -97,11 +100,16 @@ function ProfilePage() {
                 id="mobile"
                 dir="ltr"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-                placeholder="09121234567"
-                maxLength={11}
+                readOnly
+                disabled
+                placeholder="ثبت‌نشده"
               />
+              <p className="text-muted-foreground text-xs">
+                شماره موبایل با تأیید پیامکی ثبت می‌شود و قابل ویرایش دستی نیست. برای تغییر آن با
+                پشتیبانی تماس بگیرید.
+              </p>
             </div>
+
             <Button onClick={save} disabled={saving}>
               {saving ? <Loader2 className="size-4 animate-spin" /> : "ذخیره تغییرات"}
             </Button>

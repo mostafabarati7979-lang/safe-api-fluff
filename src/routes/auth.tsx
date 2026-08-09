@@ -346,7 +346,6 @@ function MobileOtpSignup() {
 
   const [fullName, setFullName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [step, setStep] = useState<"info" | "code">("info");
   const [busy, setBusy] = useState(false);
@@ -365,10 +364,6 @@ function MobileOtpSignup() {
     }
     if (!/^09\d{9}$/.test(mobile.trim())) {
       toast.error(otpErrorMessage("invalid_mobile"));
-      return;
-    }
-    if (email.trim() && !z.string().email().safeParse(email.trim()).success) {
-      toast.error("ایمیل معتبر وارد کنید");
       return;
     }
     setBusy(true);
@@ -401,8 +396,8 @@ function MobileOtpSignup() {
           mobile: mobile.trim(),
           code: code.trim(),
           fullName: fullName.trim(),
-          email: email.trim(),
         },
+
       });
       if (!res.success) {
         toast.error(otpErrorMessage(res.reason));
@@ -453,18 +448,6 @@ function MobileOtpSignup() {
             placeholder="09121234567"
             value={mobile}
             onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
-          />
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="signup-email">
-            ایمیل (اختیاری)
-          </label>
-          <Input
-            id="signup-email"
-            dir="ltr"
-            placeholder="name@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <Button className="w-full" onClick={send} disabled={busy}>

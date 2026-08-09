@@ -38,12 +38,14 @@ const signupRequestSchema = z.object({
   fullName: z.string().trim().min(3).max(80),
 });
 
+// SECURITY: no e-mail is accepted here. Only the mobile number is verified in
+// this flow, so an attacker-supplied address must never be attached to the account.
 const signupVerifySchema = z.object({
   mobile: z.string().trim().regex(/^09\d{9}$/),
   code: z.string().trim().regex(/^\d{6}$/),
   fullName: z.string().trim().min(3).max(80),
-  email: z.string().trim().email().max(120).optional().or(z.literal("")),
 });
+
 
 export const requestSignupOtp = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => signupRequestSchema.parse(data))
@@ -69,8 +71,8 @@ export const verifySignupOtp = createServerFn({ method: "POST" })
       mobile: data.mobile,
       code: data.code,
       fullName: data.fullName,
-      email: data.email || undefined,
     });
+
     if (!result.ok) return { success: false as const, reason: result.reason };
     return { success: true as const, email: result.email, tokenHash: result.tokenHash };
   });

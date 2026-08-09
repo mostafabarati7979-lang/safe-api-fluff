@@ -11,6 +11,16 @@ export const explainAnswer = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => schema.parse(data))
   .handler(async ({ data, context }) => {
+    // AI explanations are a paid feature: require an active subscription (or admin),
+    // exactly like start_attempt does. Never trust the disabled state of the UI button.
+    const [{ data: isAdmin }, { data: hasSub }] = await Promise.all([
+      context.supabase.rpc("is_admin"),
+      context.supabase.rpc("has_active_subscription", { _user_id: context.userId }),
+    ]);
+    if (!isAdmin && !hasSub) {
+      throw new Error("اشتراک شما فعال نیست. برای استفاده از توضیح هوش مصنوعی اشتراک تهیه کنید");
+    }
+
     // The caller must own a finished attempt that actually contains this question.
     // RLS on exam_attempts/attempt_answers scopes these reads to the current user.
     const { data: attempt, error: attemptError } = await context.supabase
