@@ -48,10 +48,13 @@ function ProfilePage() {
       return;
     }
     setSaving(true);
+    // Mobile is verified via SMS OTP and enforced unique in the database;
+    // it is intentionally not part of this update.
     const { error } = await supabase
       .from("profiles")
-      .update({ full_name: name, mobile: mobile.trim() || null })
+      .update({ full_name: name })
       .eq("id", profile.id);
+
     setSaving(false);
     if (error) {
       toast.error("ذخیره تغییرات ناموفق بود");
