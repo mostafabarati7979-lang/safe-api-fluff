@@ -367,10 +367,6 @@ function MobileOtpSignup() {
       toast.error(otpErrorMessage("invalid_mobile"));
       return;
     }
-    if (email.trim() && !z.string().email().safeParse(email.trim()).success) {
-      toast.error("ایمیل معتبر وارد کنید");
-      return;
-    }
     setBusy(true);
     try {
       const res = await requestOtp({ data: { mobile: mobile.trim(), fullName: fullName.trim() } });
