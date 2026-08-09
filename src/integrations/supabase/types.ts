@@ -221,28 +221,42 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          display_order: number
           id: string
           name: string
+          parent_id: string | null
           slug: string
           status: string
         }
         Insert: {
           created_at?: string
           description?: string | null
+          display_order?: number
           id?: string
           name: string
+          parent_id?: string | null
           slug: string
           status?: string
         }
         Update: {
           created_at?: string
           description?: string | null
+          display_order?: number
           id?: string
           name?: string
+          parent_id?: string | null
           slug?: string
           status?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       exam_assignments: {
         Row: {
@@ -383,6 +397,7 @@ export type Database = {
         Row: {
           display_order: number
           exam_id: string
+          exam_subject_id: string | null
           id: string
           question_id: string
           score: number
@@ -390,6 +405,7 @@ export type Database = {
         Insert: {
           display_order?: number
           exam_id: string
+          exam_subject_id?: string | null
           id?: string
           question_id: string
           score?: number
@@ -397,6 +413,7 @@ export type Database = {
         Update: {
           display_order?: number
           exam_id?: string
+          exam_subject_id?: string | null
           id?: string
           question_id?: string
           score?: number
@@ -410,10 +427,71 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "exam_questions_exam_subject_id_fkey"
+            columns: ["exam_subject_id"]
+            isOneToOne: false
+            referencedRelation: "exam_subjects"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "exam_questions_question_id_fkey"
             columns: ["question_id"]
             isOneToOne: false
             referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exam_subjects: {
+        Row: {
+          coefficient: number
+          created_at: string
+          display_order: number
+          exam_id: string
+          id: string
+          negative_marking: boolean
+          question_count: number
+          subject_id: string
+          time_limit_minutes: number | null
+          updated_at: string
+        }
+        Insert: {
+          coefficient?: number
+          created_at?: string
+          display_order?: number
+          exam_id: string
+          id?: string
+          negative_marking?: boolean
+          question_count?: number
+          subject_id: string
+          time_limit_minutes?: number | null
+          updated_at?: string
+        }
+        Update: {
+          coefficient?: number
+          created_at?: string
+          display_order?: number
+          exam_id?: string
+          id?: string
+          negative_marking?: boolean
+          question_count?: number
+          subject_id?: string
+          time_limit_minutes?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exam_subjects_exam_id_fkey"
+            columns: ["exam_id"]
+            isOneToOne: false
+            referencedRelation: "exams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "exam_subjects_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
             referencedColumns: ["id"]
           },
         ]
@@ -427,15 +505,25 @@ export type Database = {
           description: string | null
           duration_minutes: number
           id: string
+          is_free: boolean
+          keywords: string | null
+          level: string | null
           max_attempts: number
+          meta_description: string | null
+          meta_title: string | null
+          organization_id: string | null
           passing_score: number
+          period: string | null
+          price: number
           randomize_options: boolean
           randomize_questions: boolean
+          round: string | null
           show_correct_answers: boolean
           slug: string
           status: string
           title: string
           updated_at: string
+          year: number | null
         }
         Insert: {
           access_type?: string
@@ -445,15 +533,25 @@ export type Database = {
           description?: string | null
           duration_minutes?: number
           id?: string
+          is_free?: boolean
+          keywords?: string | null
+          level?: string | null
           max_attempts?: number
+          meta_description?: string | null
+          meta_title?: string | null
+          organization_id?: string | null
           passing_score?: number
+          period?: string | null
+          price?: number
           randomize_options?: boolean
           randomize_questions?: boolean
+          round?: string | null
           show_correct_answers?: boolean
           slug: string
           status?: string
           title: string
           updated_at?: string
+          year?: number | null
         }
         Update: {
           access_type?: string
@@ -463,15 +561,25 @@ export type Database = {
           description?: string | null
           duration_minutes?: number
           id?: string
+          is_free?: boolean
+          keywords?: string | null
+          level?: string | null
           max_attempts?: number
+          meta_description?: string | null
+          meta_title?: string | null
+          organization_id?: string | null
           passing_score?: number
+          period?: string | null
+          price?: number
           randomize_options?: boolean
           randomize_questions?: boolean
+          round?: string | null
           show_correct_answers?: boolean
           slug?: string
           status?: string
           title?: string
           updated_at?: string
+          year?: number | null
         }
         Relationships: [
           {
@@ -481,7 +589,50 @@ export type Database = {
             referencedRelation: "categories"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "exams_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      organizations: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          logo_url: string | null
+          name: string
+          slug: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          logo_url?: string | null
+          name: string
+          slug: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          logo_url?: string | null
+          name?: string
+          slug?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       payments: {
         Row: {
@@ -724,6 +875,7 @@ export type Database = {
           id: string
           question_text: string
           status: string
+          subject_id: string | null
           updated_at: string
         }
         Insert: {
@@ -735,6 +887,7 @@ export type Database = {
           id?: string
           question_text: string
           status?: string
+          subject_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -746,6 +899,7 @@ export type Database = {
           id?: string
           question_text?: string
           status?: string
+          subject_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -754,6 +908,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "questions_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
             referencedColumns: ["id"]
           },
         ]
@@ -851,6 +1012,39 @@ export type Database = {
           updated_by?: string | null
           verify_template_id?: string | null
           welcome_template_id?: string | null
+        }
+        Relationships: []
+      }
+      subjects: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          name: string
+          slug: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          name: string
+          slug: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          name?: string
+          slug?: string
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1001,8 +1195,11 @@ export type Database = {
       }
       delete_category: { Args: { p_id: string }; Returns: undefined }
       delete_exam: { Args: { p_id: string }; Returns: undefined }
+      delete_organization: { Args: { p_id: string }; Returns: undefined }
+      delete_subject: { Args: { p_id: string }; Returns: undefined }
       get_attempt_review: { Args: { p_attempt_id: string }; Returns: Json }
       get_attempt_state: { Args: { p_attempt_id: string }; Returns: Json }
+      get_exam_public: { Args: { p_slug: string }; Returns: Json }
       get_exam_topics: {
         Args: { p_exam_id: string }
         Returns: {
@@ -1029,6 +1226,18 @@ export type Database = {
         Returns: Json
       }
       is_admin: { Args: never; Returns: boolean }
+      list_exams_public: {
+        Args: {
+          p_category_id?: string
+          p_is_free?: boolean
+          p_level?: string
+          p_organization_id?: string
+          p_search?: string
+          p_subject_id?: string
+          p_year?: number
+        }
+        Returns: Json
+      }
       list_question_reports: {
         Args: never
         Returns: {
@@ -1095,6 +1304,45 @@ export type Database = {
         }
         Returns: string
       }
+      save_exam_v2: {
+        Args: {
+          p_access_type: string
+          p_category_id: string
+          p_description: string
+          p_duration_minutes: number
+          p_id: string
+          p_is_free: boolean
+          p_keywords: string
+          p_level: string
+          p_max_attempts: number
+          p_meta_description: string
+          p_meta_title: string
+          p_organization_id: string
+          p_passing_score: number
+          p_period: string
+          p_price: number
+          p_randomize_options: boolean
+          p_randomize_questions: boolean
+          p_round: string
+          p_show_correct_answers: boolean
+          p_slug: string
+          p_status: string
+          p_title: string
+          p_year: number
+        }
+        Returns: string
+      }
+      save_organization: {
+        Args: {
+          p_description: string
+          p_display_order: number
+          p_id: string
+          p_name: string
+          p_slug: string
+          p_status: string
+        }
+        Returns: string
+      }
       save_question: {
         Args: {
           p_category_id: string
@@ -1107,8 +1355,23 @@ export type Database = {
         }
         Returns: string
       }
+      save_subject: {
+        Args: {
+          p_description: string
+          p_display_order: number
+          p_id: string
+          p_name: string
+          p_slug: string
+          p_status: string
+        }
+        Returns: string
+      }
       set_exam_categories: {
         Args: { p_category_ids: string[]; p_exam_id: string }
+        Returns: undefined
+      }
+      set_exam_subjects: {
+        Args: { p_exam_id: string; p_rows: Json }
         Returns: undefined
       }
       start_attempt: {
