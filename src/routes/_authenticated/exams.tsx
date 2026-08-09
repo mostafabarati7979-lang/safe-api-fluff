@@ -123,52 +123,6 @@ function ExamsPage() {
     },
   });
 
-  const save = useMutation({
-    mutationFn: async () => {
-      const title = form.title.trim();
-      if (!title) throw new Error("عنوان آزمون الزامی است");
-      const duration = Number(form.duration_minutes);
-      if (!Number.isFinite(duration) || duration <= 0) throw new Error("مدت زمان نامعتبر است");
-      const passing = Number(form.passing_score);
-      if (!Number.isFinite(passing) || passing < 0) throw new Error("حد نصاب نامعتبر است");
-      const maxAtt = Number(form.max_attempts);
-      if (!Number.isFinite(maxAtt) || maxAtt <= 0) throw new Error("حداکثر تعداد شرکت نامعتبر است");
-
-      const { data, error } = await supabase.rpc("save_exam", {
-        p_id: (form.id || null) as unknown as string,
-        p_title: title,
-        p_slug: slugify(title),
-        p_description: (form.description.trim() || null) as unknown as string,
-        p_duration_minutes: duration,
-        p_passing_score: passing,
-        p_status: form.status,
-        p_access_type: form.access_type,
-        p_max_attempts: maxAtt,
-        p_show_correct_answers: form.show_correct_answers,
-        p_randomize_questions: form.randomize_questions,
-        p_randomize_options: form.randomize_options,
-        p_category_id: (form.category_id || null) as unknown as string,
-      });
-      if (error) throw error;
-      const examId = (data as string | null) ?? form.id;
-      if (examId) {
-        const cats = [...new Set([...form.category_ids, ...(form.category_id ? [form.category_id] : [])])];
-        const { error: catError } = await supabase.rpc("set_exam_categories", {
-          p_exam_id: examId,
-          p_category_ids: cats,
-        });
-        if (catError) throw catError;
-      }
-    },
-    onSuccess: () => {
-      toast.success("آزمون ذخیره شد");
-      setOpen(false);
-      setForm(emptyForm);
-      void qc.invalidateQueries({ queryKey: ["exams"] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
-
   const deleteExam = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.rpc("delete_exam", { p_id: id });
@@ -183,26 +137,12 @@ function ExamsPage() {
   });
 
   const openNew = () => {
-    setForm(emptyForm);
+    setWizardExamId(null);
     setOpen(true);
   };
 
   const openEdit = (e: ExamRow) => {
-    setForm({
-      id: e.id,
-      title: e.title,
-      description: e.description ?? "",
-      duration_minutes: String(e.duration_minutes),
-      passing_score: String(e.passing_score),
-      status: e.status as ExamStatus,
-      access_type: e.access_type as AccessType,
-      max_attempts: "1",
-      show_correct_answers: true,
-      randomize_questions: false,
-      randomize_options: false,
-      category_id: e.category_id ?? "",
-      category_ids: (e.exam_categories ?? []).map((ec) => ec.category_id),
-    });
+    setWizardExamId(e.id);
     setOpen(true);
   };
 
