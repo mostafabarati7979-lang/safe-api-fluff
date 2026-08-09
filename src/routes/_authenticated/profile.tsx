@@ -97,11 +97,16 @@ function ProfilePage() {
                 id="mobile"
                 dir="ltr"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-                placeholder="09121234567"
-                maxLength={11}
+                readOnly
+                disabled
+                placeholder="ثبت‌نشده"
               />
+              <p className="text-muted-foreground text-xs">
+                شماره موبایل با تأیید پیامکی ثبت می‌شود و قابل ویرایش دستی نیست. برای تغییر آن با
+                پشتیبانی تماس بگیرید.
+              </p>
             </div>
+
             <Button onClick={save} disabled={saving}>
               {saving ? <Loader2 className="size-4 animate-spin" /> : "ذخیره تغییرات"}
             </Button>
