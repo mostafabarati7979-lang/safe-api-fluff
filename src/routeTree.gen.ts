@@ -21,6 +21,7 @@ import { Route as AuthenticatedExamsRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedImportRouteImport } from './routes/_authenticated/import'
 import { Route as AuthenticatedMyExamsRouteImport } from './routes/_authenticated/my-exams'
 import { Route as AuthenticatedMyResultsRouteImport } from './routes/_authenticated/my-results'
+import { Route as AuthenticatedOrganizationsRouteImport } from './routes/_authenticated/organizations'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedQuestionReportsRouteImport } from './routes/_authenticated/question-reports'
 import { Route as AuthenticatedQuestionsRouteImport } from './routes/_authenticated/questions'
@@ -93,6 +94,12 @@ const AuthenticatedMyResultsRoute = AuthenticatedMyResultsRouteImport.update({
   path: '/my-results',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOrganizationsRoute =
+  AuthenticatedOrganizationsRouteImport.update({
+    id: '/organizations',
+    path: '/organizations',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -172,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/import': typeof AuthenticatedImportRoute
   '/my-exams': typeof AuthenticatedMyExamsRoute
   '/my-results': typeof AuthenticatedMyResultsRoute
+  '/organizations': typeof AuthenticatedOrganizationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/question-reports': typeof AuthenticatedQuestionReportsRoute
   '/questions': typeof AuthenticatedQuestionsRoute
@@ -197,6 +205,7 @@ export interface FileRoutesByTo {
   '/import': typeof AuthenticatedImportRoute
   '/my-exams': typeof AuthenticatedMyExamsRoute
   '/my-results': typeof AuthenticatedMyResultsRoute
+  '/organizations': typeof AuthenticatedOrganizationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/question-reports': typeof AuthenticatedQuestionReportsRoute
   '/questions': typeof AuthenticatedQuestionsRoute
@@ -224,6 +233,7 @@ export interface FileRoutesById {
   '/_authenticated/import': typeof AuthenticatedImportRoute
   '/_authenticated/my-exams': typeof AuthenticatedMyExamsRoute
   '/_authenticated/my-results': typeof AuthenticatedMyResultsRoute
+  '/_authenticated/organizations': typeof AuthenticatedOrganizationsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/question-reports': typeof AuthenticatedQuestionReportsRoute
   '/_authenticated/questions': typeof AuthenticatedQuestionsRoute
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/import'
     | '/my-exams'
     | '/my-results'
+    | '/organizations'
     | '/profile'
     | '/question-reports'
     | '/questions'
@@ -276,6 +287,7 @@ export interface FileRouteTypes {
     | '/import'
     | '/my-exams'
     | '/my-results'
+    | '/organizations'
     | '/profile'
     | '/question-reports'
     | '/questions'
@@ -302,6 +314,7 @@ export interface FileRouteTypes {
     | '/_authenticated/import'
     | '/_authenticated/my-exams'
     | '/_authenticated/my-results'
+    | '/_authenticated/organizations'
     | '/_authenticated/profile'
     | '/_authenticated/question-reports'
     | '/_authenticated/questions'
@@ -407,6 +420,13 @@ declare module '@tanstack/react-router' {
       path: '/my-results'
       fullPath: '/my-results'
       preLoaderRoute: typeof AuthenticatedMyResultsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/organizations': {
+      id: '/_authenticated/organizations'
+      path: '/organizations'
+      fullPath: '/organizations'
+      preLoaderRoute: typeof AuthenticatedOrganizationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/profile': {
@@ -516,6 +536,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedImportRoute: typeof AuthenticatedImportRoute
   AuthenticatedMyExamsRoute: typeof AuthenticatedMyExamsRoute
   AuthenticatedMyResultsRoute: typeof AuthenticatedMyResultsRoute
+  AuthenticatedOrganizationsRoute: typeof AuthenticatedOrganizationsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedQuestionReportsRoute: typeof AuthenticatedQuestionReportsRoute
   AuthenticatedQuestionsRoute: typeof AuthenticatedQuestionsRoute
@@ -538,6 +559,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedImportRoute: AuthenticatedImportRoute,
   AuthenticatedMyExamsRoute: AuthenticatedMyExamsRoute,
   AuthenticatedMyResultsRoute: AuthenticatedMyResultsRoute,
+  AuthenticatedOrganizationsRoute: AuthenticatedOrganizationsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedQuestionReportsRoute: AuthenticatedQuestionReportsRoute,
   AuthenticatedQuestionsRoute: AuthenticatedQuestionsRoute,
@@ -563,13 +585,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
