@@ -401,8 +401,8 @@ function MobileOtpSignup() {
           mobile: mobile.trim(),
           code: code.trim(),
           fullName: fullName.trim(),
-          email: email.trim(),
         },
+
       });
       if (!res.success) {
         toast.error(otpErrorMessage(res.reason));
