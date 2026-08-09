@@ -2,31 +2,12 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Settings, Clock, GraduationCap, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Settings, Clock, GraduationCap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,11 +23,10 @@ import {
   InlineLoading,
   EmptyState,
   ErrorState,
-  RequireAdmin,
 } from "@/components/ui-states";
-import { Checkbox } from "@/components/ui/checkbox";
 import { StartExamDialog } from "@/components/start-exam-dialog";
-import { examStatusLabels, slugify } from "@/lib/format";
+import { ExamWizard } from "@/components/exam-wizard";
+import { examStatusLabels } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/exams")({
   head: () => ({
