@@ -71,8 +71,8 @@ export const verifySignupOtp = createServerFn({ method: "POST" })
       mobile: data.mobile,
       code: data.code,
       fullName: data.fullName,
-      email: data.email || undefined,
     });
+
     if (!result.ok) return { success: false as const, reason: result.reason };
     return { success: true as const, email: result.email, tokenHash: result.tokenHash };
   });
