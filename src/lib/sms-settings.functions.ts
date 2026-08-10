@@ -15,7 +15,10 @@ const saveSchema = z.object({
 const testSchema = z.object({ mobile: z.string().trim().regex(/^09\d{9}$/) });
 
 async function assertAdmin(context: { supabase: SupabaseClient<Database>; userId: string }) {
-  const { data } = await context.supabase.rpc("has_role", {
+  // has_role is not executable by signed-in users through the API; check it
+  // server-side with the trusted client for the already-verified caller id.
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin.rpc("has_role", {
     _user_id: context.userId,
     _role: "admin",
   });
