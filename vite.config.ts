@@ -12,4 +12,16 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Standard Node.js hosting target (cPanel / Passenger / any VPS).
+  // Inside the Lovable sandbox these values are ignored and the Cloudflare
+  // preset is forced, so preview/publish keep working unchanged.
+  nitro: {
+    preset: "node-server",
+    output: {
+      dir: "dist",
+      serverDir: "dist/server",
+      publicDir: "dist/public",
+    },
+  },
 });
+
