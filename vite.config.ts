@@ -8,8 +8,22 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
   tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
+    // Redirect TanStack Start's bundled server entry to src/ssr.ts (our SSR error wrapper).
     // nitro/vite builds from this
-    server: { entry: "server" },
+    server: { entry: "ssr" },
+  },
+  // Standard Node.js hosting target (cPanel / Passenger / any VPS).
+  // Inside the Lovable sandbox these values are ignored and the Cloudflare
+  // preset is forced, so preview/publish keep working unchanged.
+  nitro: {
+    preset: "node-server",
+    // Root server.js is our Passenger bootstrap, not a Nitro handler.
+    serverEntry: false,
+    output: {
+      dir: "dist",
+      serverDir: "dist/server",
+      publicDir: "dist/public",
+    },
   },
 });
+
