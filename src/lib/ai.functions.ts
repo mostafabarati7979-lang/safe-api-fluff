@@ -114,7 +114,7 @@ export const explainAnswer = createServerFn({ method: "POST" })
       "در حداکثر ۴ جمله و به زبان فارسی توضیح بده چرا پاسخ صحیح درست است و اشتباه رایج چیست.",
     ].join("\n");
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const res = await fetch(`${baseUrl}/chat/completions`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
