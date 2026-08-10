@@ -93,9 +93,16 @@ export const explainAnswer = createServerFn({ method: "POST" })
     }
 
     const useCustomKey = settings?.provider === "custom" && !!settings.api_key;
-    const apiKey = useCustomKey ? settings!.api_key! : process.env["LOVABLE_API_KEY"];
+    const apiKey = useCustomKey
+      ? settings!.api_key!
+      : (process.env["AI_API_KEY"] ?? process.env["LOVABLE_API_KEY"]);
     if (!apiKey) throw new Error("سرویس هوش مصنوعی پیکربندی نشده است");
     const model = settings?.model || "google/gemini-3.5-flash";
+    // OpenAI-compatible endpoint; configurable so the app runs on any host.
+    const baseUrl = (
+      process.env["AI_API_BASE_URL"] ?? "https://ai.gateway.lovable.dev/v1"
+    ).replace(/\/+$/, "");
+
 
     const prompt = [
       `سوال: ${question.question_text}`,
