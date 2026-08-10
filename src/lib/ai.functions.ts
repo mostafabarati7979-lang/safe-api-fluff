@@ -13,9 +13,12 @@ export const explainAnswer = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     // AI explanations are a paid feature: require an active subscription (or admin),
     // exactly like start_attempt does. Never trust the disabled state of the UI button.
+    // The role/subscription helpers are not callable by signed-in users through the API,
+    // so they are evaluated here with the trusted service-role client for the verified caller.
+    const { supabaseAdmin: authzAdmin } = await import("@/integrations/supabase/client.server");
     const [{ data: isAdmin }, { data: hasSub }] = await Promise.all([
-      context.supabase.rpc("is_admin"),
-      context.supabase.rpc("has_active_subscription", { _user_id: context.userId }),
+      authzAdmin.rpc("has_role", { _user_id: context.userId, _role: "admin" }),
+      authzAdmin.rpc("has_active_subscription", { _user_id: context.userId }),
     ]);
     if (!isAdmin && !hasSub) {
       throw new Error("اشتراک شما فعال نیست. برای استفاده از توضیح هوش مصنوعی اشتراک تهیه کنید");
