@@ -17,6 +17,8 @@ export default defineConfig({
   // preset is forced, so preview/publish keep working unchanged.
   nitro: {
     preset: "node-server",
+    // Root server.js is our Passenger bootstrap, not a Nitro handler.
+    serverEntry: false,
     output: {
       dir: "dist",
       serverDir: "dist/server",
